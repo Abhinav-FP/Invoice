@@ -51,9 +51,9 @@ export async function generatePdfFromHtml(html: string): Promise<Buffer> {
 
         // Return the PDF buffer
         return pdfBuffer;
-    } catch (error:any) {
+    } catch (error: unknown) {
         console.error("Error generating PDF:", error);
-        throw new Error(`PDF generation failed: ${error.message}`);
+        throw new Error(`PDF generation failed: ${error}`);
     } finally {
         if (browser) await browser.close();
     }
