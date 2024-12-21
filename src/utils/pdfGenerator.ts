@@ -11,45 +11,46 @@ export async function generatePdfFromHtml(html: string): Promise<Buffer> {
     let browser;
 
     try {
+        // Conditionally import Puppeteer
+        let puppeteer;
+        if (process.env.NODE_ENV === "production") {
+            puppeteer = await import("puppeteer-core");
+        } else {
+            puppeteer = await import("puppeteer");
+        }
+
+        if (!puppeteer) throw new Error("Puppeteer import failed");
+
         // Launch Puppeteer browser
         if (process.env.NODE_ENV === "production") {
-            const puppeteer = await import("puppeteer-core");
             browser = await puppeteer.launch({
                 args: chromium.args,
                 defaultViewport: chromium.defaultViewport,
-                executablePath: await chromium.executablePath(process.env.CHROMIUM_EXECUTABLE_PATH || ""),
+                executablePath: await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v122.0.0/chromium-v122.0.0-pack.tar"),
                 headless: true,
                 ignoreHTTPSErrors: true,
             });
         } else {
-            const puppeteer = await import("puppeteer");
             browser = await puppeteer.launch({
                 args: ["--no-sandbox", "--disable-setuid-sandbox"],
-                headless: "new",
+                headless: true, // Use boolean true for headless mode
             });
         }
 
         if (!browser) throw new Error("Browser launch failed");
 
         const page = await browser.newPage();
-
-        // Set the content of the page
         await page.setContent(html, { waitUntil: "networkidle0" });
 
-        // Optionally, add Tailwind CSS if required
         const tailwindCdn = "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css";
         await page.addStyleTag({ url: tailwindCdn });
 
-        // Generate the PDF
         const pdfBuffer = await page.pdf({
             format: "a4",
             printBackground: true,
         });
 
-        // Close the page
         await page.close();
-
-        // Return the PDF buffer
         return pdfBuffer;
     } catch (error: unknown) {
         console.error("Error generating PDF:", error);

@@ -17,7 +17,9 @@
     "puppeteer-core": "^22.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tls": "^0.0.1"
+    "react-qr-barcode-scanner": "^2.0.0",
+    "tls": "^0.0.1",
+    "webpack": "^5.97.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
