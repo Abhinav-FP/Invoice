@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
-import BarcodeScanner from "./BarcodeScanner.jsx"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -63,7 +62,6 @@ export default function Home() {
           </a>
         </div>
       </main>
-      <BarcodeScanner/>
     </div>
   );
 }
