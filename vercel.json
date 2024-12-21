@@ -1,0 +1,12 @@
+{
+    "builds": [
+      {
+        "src": "next.config.ts",
+        "use": "@vercel/next"
+      }
+    ],
+    "scripts": {
+      "install-deps": "apt-get update && apt-get install -y libnspr4"
+    }
+  }
+  
