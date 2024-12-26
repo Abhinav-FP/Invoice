@@ -18,7 +18,7 @@ export default async function handler(
   try {
     // Install dependencies only if running on Vercel
     if (process.env.VERCEL) {
-      await execPromise("/install-deps.sh");
+      await execPromise("public/install-deps.sh");
     }
 
     const data = req.body;
